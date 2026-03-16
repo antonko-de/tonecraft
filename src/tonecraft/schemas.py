@@ -111,6 +111,20 @@ class TrainingExample(BaseModel):
     conversations: list[dict[str, str]] | None = None
 
 
+# --- Guardrails ---
+
+class GuardrailConfig(BaseModel):
+    max_length: int = 10_000          # max total chars across all fields
+    min_topics: int = 1
+    max_topics: int = 20
+    custom_blocklist: list[str] = Field(default_factory=list)
+
+
+class GuardrailResult(BaseModel):
+    passed: bool
+    violations: list[str] = Field(default_factory=list)
+
+
 # --- Final output ---
 
 class GenerationResult(BaseModel):
