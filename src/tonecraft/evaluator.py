@@ -11,5 +11,11 @@ def evaluate(pairs: list[QAPair], threshold: float) -> tuple[list[QAPair], list[
     """Split pairs into accepted (confidence >= threshold) and rejected."""
     accepted = [p for p in pairs if p.confidence >= threshold]
     rejected = [p for p in pairs if p.confidence < threshold]
-    logger.debug("Evaluated %d pairs: %d accepted, %d rejected", len(pairs), len(accepted), len(rejected))
+    logger.info(
+        "Evaluated %d pairs (threshold=%.2f): %d accepted, %d rejected",
+        len(pairs), threshold, len(accepted), len(rejected),
+    )
+    if rejected:
+        for p in rejected:
+            logger.debug("Rejected [confidence=%.2f, topic=%r]: %r", p.confidence, p.topic, p.question[:60])
     return accepted, rejected
