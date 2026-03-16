@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tonecraft"
+dynamic = ["version"]
+description = "Generate synthetic conversational data for tone and speech pattern training for SLM fine-tuning"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dependencies = [
+    "instructor>=1.0.0,<2.0.0",
+    "pydantic>=2.0",
+    "click>=8.0",
+    "tomli>=2.0; python_version < '3.11'",
+]
+
+[project.optional-dependencies]
+anthropic = ["anthropic>=0.30.0"]
+openai = ["openai>=1.0.0"]
+ollama = ["ollama>=0.3.0"]
+all = ["anthropic>=0.30.0", "openai>=1.0.0", "ollama>=0.3.0"]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.4",
+    "anthropic>=0.30.0",
+    "openai>=1.0.0",
+]
+
+[project.scripts]
+tonecraft = "tonecraft.cli:cli"
+
+[tool.hatch.version]
+path = "src/tonecraft/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tonecraft"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "integration: marks tests that call real LLM APIs (deselect with '-m not integration')",
+]
+
+[tool.ruff]
+line-length = 100
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

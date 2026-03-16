@@ -1,0 +1,24 @@
+# tonecraft.toml — project configuration
+
+[target]
+slm = "microsoft/phi-3-mini"          # HuggingFace model ID or local path
+slm_context_window = 4096             # max tokens the SLM supports
+training_format = "chatml"            # chatml | alpaca | sharegpt | custom
+
+[generation]
+provider = "openai"                   # anthropic | openai | ollama
+model_expert = "gpt-4o"              # strong model for domain expert
+model_agent = "gpt-4o-mini"          # lighter model for questioner/responder
+base_url = ""                         # optional, required for ollama (e.g., http://localhost:11434/v1)
+max_pairs = 500                       # target number of QA pairs
+max_iterations = 3
+confidence_threshold = 0.7
+
+[generation.api]
+# API keys can be set here or via env vars (ANTHROPIC_API_KEY, OPENAI_API_KEY)
+# api_key = "sk-..."                  # not recommended, use env vars
+
+[output]
+format = ["jsonl", "json"]            # jsonl (training-ready) + json (human-readable)
+output_dir = "./output"
+include_metadata = true               # include generation metadata in readable JSON
